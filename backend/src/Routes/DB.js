@@ -23,7 +23,7 @@ const withDB = async (operations, res) => {
 	}
 }
 
-const createUser = async (uid, name, email, res) => {
+const createUser = async (uid, name, email, isAdmin, res) => {
 	await withDB(async (db) => {
 		const user = await db.collection('users').findOne({ uid: uid })
 		if (!user) {
@@ -31,6 +31,7 @@ const createUser = async (uid, name, email, res) => {
 				uid,
 				name,
 				email,
+				isAdmin,
 				createdQuiz: [],
 				attemptedQuiz: []
 			})

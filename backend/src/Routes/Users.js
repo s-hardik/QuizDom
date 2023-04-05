@@ -5,17 +5,18 @@ const DB = require('./DB')
 
 // Create User in DB
 Router.post('/create', (req, res) => {
-	const { uid, name, email } = req.body
+	const { uid, name, email, isAdmin } = req.body;
+	console.log(isAdmin);
 	if (!uid) return res.status(500).json({ error: 'Incomplete Parameters' })
 
-	DB.createUser(uid, name, email, res)
+	DB.createUser(uid, name, email, isAdmin, res)
 })
 
 // Get user Data
 Router.get('/:uid', (req, res) => {
 	const uid = req.params.uid
 	if (!uid) return res.status(500).json({ error: 'Incomplete Parameters' })
-
+	
 	DB.withDB(async (db) => {
 		const createdCursor = db
 			.collection('quizzes')

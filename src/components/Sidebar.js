@@ -29,7 +29,7 @@ function Sidebar() {
 		},
 		{
 			title: 'Create Quiz',
-			path: '/create-quiz',
+			path: 'admin/create-quiz',
 			icon: <CreateNewFolder />,
 			CName: 'nav-text',
 		},

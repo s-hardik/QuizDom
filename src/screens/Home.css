@@ -56,6 +56,11 @@
 	color: var(--primary);
 	font-size: 100px;
 }
+#login-card .login-text {
+	padding: 20px;
+	color: var(--primary);
+	font-size: 20px;
+}
 .signIn-btn {
 	margin: 10px;
 	padding: 12px;

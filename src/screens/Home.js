@@ -3,9 +3,16 @@ import './Home.css'
 import { StyledFirebaseAuth } from 'react-firebaseui'
 import firebase from '../firebase/firebase'
 import LoadingScreen from './LoadingScreen'
+import { useLocation } from 'react-router-dom'
 
 const Home = ({ setUser }) => {
-	const [loading, setLoading] = useState(true)
+	const location = useLocation();
+	const [loading, setLoading] = useState(true);
+	const [checked, setChecked] = useState(false);
+	function handleChange(e){
+		setChecked(e.target.checked);
+	}
+	
 	var uiConfig = {
 		signInflow: 'popup',
 		signInOptions: [
@@ -26,6 +33,7 @@ const Home = ({ setUser }) => {
 					uid: firebase.auth().currentUser.uid,
 					name: firebase.auth().currentUser.displayName,
 					email: firebase.auth().currentUser.email,
+					isAdmin: checked
 				})
 				console.log('User Logged In')
 			} else {
@@ -36,7 +44,7 @@ const Home = ({ setUser }) => {
 			if (isMounted) setLoading(false)
 		})
 		return () => (isMounted = false)
-	}, [setUser])
+	}, [setUser,checked])
 	return (
 		<>
 			{loading ? (
@@ -58,6 +66,10 @@ const Home = ({ setUser }) => {
 						<label className='login-label'>
 							<b>Q</b>
 						</label>
+						{location.pathname==='/admin'?<div>
+						<input type="checkbox" id="admin" name="admin" checked={checked} onChange={handleChange}/>
+						<label className='login-text' for="admin">Sign in as Admin</label>
+						</div>:"" }
 						<StyledFirebaseAuth
 							borderRadius='40px'
 							uiConfig={uiConfig}

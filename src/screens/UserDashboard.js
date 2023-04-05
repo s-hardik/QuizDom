@@ -5,7 +5,7 @@ import JoinedQuizCard from '../components/JoinedQuizCard'
 import LoadingScreen from './LoadingScreen'
 import CreateQuiz from './CreateQuiz'
 
-const UserDashboard = ({ user }) => {
+const UserDashboard = ({ user, isAdmin }) => {
 	const [createdQuizzes, setCreatedQuizzes] = useState([])
 	const [attemptedQuizzes, setAttemptedQuizzes] = useState([])
 	const [loading, setLoading] = useState(true)
@@ -76,7 +76,7 @@ const UserDashboard = ({ user }) => {
 		)
 	return (
 		<div className='dash-body'>
-			<div className='quizzes'>
+			{isAdmin ? <div className='quizzes'>
 				<div className='heading'>
 					<div className='line-left' />
 					<h2>Created </h2>
@@ -96,7 +96,8 @@ const UserDashboard = ({ user }) => {
 						/>
 					))}
 				</div>
-			</div>
+			</div>:"" }
+			
 			<div className='quizzes'>
 				<div className='heading'>
 					<div className='line-left' />

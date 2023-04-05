@@ -2,13 +2,12 @@ import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import './OneTimeDashboard.css'
 
-const OneTimeDashboard = ({ user }) => {
+const OneTimeDashboard = ({ user, isAdmin }) => {
 	const [path, setPath] = useState('')
 	// Path Redirection
 	const onDashboard = () => setPath('/dashboard')
-	const onCreateQuiz = () => setPath('/create-quiz')
+	const onCreateQuiz = () => setPath('admin/create-quiz')
 	const onJoinQuiz = () => setPath('/join-quiz')
-
 	if (path.length > 0) return <Redirect push to={path} />
 
 	return (
@@ -21,9 +20,10 @@ const OneTimeDashboard = ({ user }) => {
 					<button className='button one-time-button' onClick={onDashboard}>
 						Dashboard
 					</button>
-					<button className='button one-time-button' onClick={onCreateQuiz}>
+					{isAdmin? <button className='button one-time-button' onClick={onCreateQuiz}>
 						Create Quiz
-					</button>
+					</button>:""}
+					
 					<button className='button one-time-button' onClick={onJoinQuiz}>
 						Join Quiz
 					</button>
