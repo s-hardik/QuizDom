@@ -12,7 +12,7 @@ import {
 	MenuRounded,
 } from '@material-ui/icons'
 
-function Sidebar() {
+function Sidebar({isAdmin}) {
 	const [signOut, setSignOut] = useState(false)
 	const SidedbarData = [
 		{
@@ -29,7 +29,7 @@ function Sidebar() {
 		},
 		{
 			title: 'Create Quiz',
-			path: 'admin/create-quiz',
+			path: '/create-quiz',
 			icon: <CreateNewFolder />,
 			CName: 'nav-text',
 		},
@@ -52,14 +52,20 @@ function Sidebar() {
 						</Icon>
 					</li>
 					{SidedbarData.map((item, index) => {
-						return (
-							<li key={index} className='nav-text'>
-								<Link to={item.path}>
-									<Icon>{item.icon}</Icon>
-									<span className='nav-item-title'>{item.title}</span>
-								</Link>
-							</li>
-						)
+						if(!isAdmin && item.title==="Create Quiz"){
+							return "";
+						}
+						else{
+							return (
+								<li key={index} className='nav-text'>
+									<Link to={item.path}>
+										<Icon>{item.icon}</Icon>
+										<span className='nav-item-title'>{item.title}</span>
+									</Link>
+								</li>
+							)
+						}
+						
 					})}
 					{/* Sign Out Button */}
 					<li className='nav-text sign-out'>

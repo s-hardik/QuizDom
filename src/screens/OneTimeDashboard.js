@@ -6,7 +6,7 @@ const OneTimeDashboard = ({ user, isAdmin }) => {
 	const [path, setPath] = useState('')
 	// Path Redirection
 	const onDashboard = () => setPath('/dashboard')
-	const onCreateQuiz = () => setPath('admin/create-quiz')
+	const onCreateQuiz = () => setPath('/create-quiz')
 	const onJoinQuiz = () => setPath('/join-quiz')
 	if (path.length > 0) return <Redirect push to={path} />
 

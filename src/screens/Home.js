@@ -24,16 +24,29 @@ const Home = ({ setUser }) => {
 			signInSuccessWithAuthResult: () => false,
 		},
 	}
-	useEffect(() => {
+	 useEffect(() => {
 		let isMounted = true
-		firebase.auth().onAuthStateChanged((user) => {
+		
+		firebase.auth().onAuthStateChanged(async (user) => {
 			// setIsLoggedIn(!!user)
+			const getAuthdetails = async () => {
+				try {
+					const response = await fetch(`/API/users/getUserRole/${firebase.auth().currentUser.uid}`);
+					const data = await response.json();
+					console.log(data);
+					console.log('Role accessed successfully');
+					return  data.isAdmin;		
+					} catch (error) {
+						console.log('Role fetching failed: ', error);
+					}
+			}
+			let isAdmin = await getAuthdetails();
 			if (user && isMounted) {
 				setUser({
 					uid: firebase.auth().currentUser.uid,
 					name: firebase.auth().currentUser.displayName,
 					email: firebase.auth().currentUser.email,
-					isAdmin: checked
+					isAdmin: isAdmin
 				})
 				console.log('User Logged In')
 			} else {

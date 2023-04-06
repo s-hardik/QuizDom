@@ -25,7 +25,6 @@ const UserDashboard = ({ user, isAdmin }) => {
 		}
 		if (user) fetchQuizData()
 	}, [user])
-
 	const editQuizHandle = async (title, questions, isOpen) => {
 		if (!title) setEditQuiz([])
 		else {

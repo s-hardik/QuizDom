@@ -21,7 +21,7 @@ import AttemptBlindQuiz from './screens/AttemptBlindQuiz';
 const App = () => {
 	const [user, setUser] = useState({});
 	const [isAdmin, setIsAdmin] = useState(false);
-	console.log(user);
+	
 	useEffect(() => {
 		const createUserInDB = async () => {
 			if (user.uid)
@@ -42,7 +42,7 @@ const App = () => {
 								'Content-Type': 'application/json',
 							},
 						});
-						setIsAdmin(user.isAdmin);
+
 						console.log('posted');
 					} catch (error) {
 						console.log('User Creation Error: ', error);
@@ -50,49 +50,48 @@ const App = () => {
 				}
 		};
 		createUserInDB();
+		setIsAdmin(user.isAdmin);
 	}, [user]);
-
+	console.log(user);
 	return (
 		<div className="App">
 			{!firebase.auth().currentUser ? (
 				<Route path={isAdmin ? '/admin' : '/'}>
-					<Home setUser={setUser} />
+					<Home setUser={setUser}  />
 				</Route>
 			) : (
 				<>
 					<div>
-						<Appbar user={user} setUser={setUser} />
+						<Appbar user={user} setUser={setUser} isAdmin={isAdmin} />
 					</div>
 					<Switch>
+						
 						<Route exact path="/">
 							<OneTimeDashBoard user={user} isAdmin={isAdmin} />
 						</Route>
 						<Route path="/dashboard">
 							<UserDashboard user={user} isAdmin={isAdmin} />
 						</Route>
-						{isAdmin ? (
-							<>
-								<Route path="admin/create-quiz">
-									<CreateQuiz user={user} />
-								</Route>
-								<Route
-									path="admin/created-succesfully/:quizCode"
-									component={CreatedSuccesfully}
-								/>
-								<Route path="admin/responses/:quizCode" component={Responses} />
-							</>
-						) : (
-							<>
-								<Route path="/join-quiz">
-									<JoinQuiz user={user} />
-								</Route>
-								<Route path="/attempt-quiz/:quizCode" component={AttemptQuiz} />
-								<Route
-									path="/attempt-blind-quiz/:quizCode"
-									component={AttemptBlindQuiz}
-								/>
-							</>
-						)}
+						{isAdmin? <>
+							<Route path="/create-quiz">
+							<CreateQuiz user={user} />
+						</Route>
+						<Route
+							path="/created-succesfully/:quizCode"
+							component={CreatedSuccesfully}
+						/>
+						<Route path="/responses/:quizCode" component={Responses} />
+						</>:""}
+						
+						<Route path="/join-quiz">
+							<JoinQuiz user={user} />
+						</Route>
+						<Route path="/attempt-quiz/:quizCode" component={AttemptQuiz} />
+						<Route
+							path="/attempt-blind-quiz/:quizCode"
+							component={AttemptBlindQuiz}
+						/>
+						
 						<Route component={NotFoundPage} />
 					</Switch>
 				</>

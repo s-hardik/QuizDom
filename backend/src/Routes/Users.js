@@ -55,4 +55,16 @@ Router.get('/:uid', (req, res) => {
 	}, res)
 })
 
+Router.get('/getUserRole/:uid', (req, res)=>{
+	const uid = req.params.uid;
+	if (!uid) return res.status(500).json({ error: 'Incomplete Parameters' });
+	
+	DB.withDB(async (db) => {
+	const user = await db.collection('users').findOne({ uid: uid });
+	console.log(user.isAdmin);
+	res.status(200).json({isAdmin: user.isAdmin});
+	},res)
+	
+})
+
 module.exports = Router
