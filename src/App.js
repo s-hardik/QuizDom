@@ -1,4 +1,4 @@
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import firebase from './firebase/firebase';
 
@@ -21,7 +21,7 @@ import AttemptBlindQuiz from './screens/AttemptBlindQuiz';
 const App = () => {
 	const [user, setUser] = useState({});
 	const [isAdmin, setIsAdmin] = useState(false);
-	
+	const location = useLocation();
 	useEffect(() => {
 		const createUserInDB = async () => {
 			if (user.uid)
@@ -51,12 +51,14 @@ const App = () => {
 		};
 		createUserInDB();
 		setIsAdmin(user.isAdmin);
+		
 	}, [user,isAdmin]);
+	if(isAdmin && location.pathname === '/admin') return <Redirect push to={`/`} />
 	console.log(user);
 	return (
 		<div className="App">
 			{!firebase.auth().currentUser ? (
-				<Route path={isAdmin ? '/admin' : '/'}>
+				<Route  path={isAdmin ? '/admin' : '/' }>
 					<Home setUser={setUser}  />
 				</Route>
 			) : (
@@ -72,7 +74,7 @@ const App = () => {
 						<Route path="/dashboard">
 							<UserDashboard user={user} isAdmin={isAdmin} />
 						</Route>
-						{isAdmin? <>
+						
 							<Route path="/create-quiz">
 							<CreateQuiz user={user} />
 						</Route>
@@ -81,7 +83,7 @@ const App = () => {
 							component={CreatedSuccesfully}
 						/>
 						<Route path="/responses/:quizCode" component={Responses} />
-						</>:""}
+						
 						
 						<Route path="/join-quiz">
 							<JoinQuiz user={user} />
@@ -91,8 +93,8 @@ const App = () => {
 							path="/attempt-blind-quiz/:quizCode"
 							component={AttemptBlindQuiz}
 						/>
+						{location.pathname !== '/admin' ?<Route component={NotFoundPage} /> :"" }
 						
-						<Route component={NotFoundPage} />
 					</Switch>
 				</>
 			)}

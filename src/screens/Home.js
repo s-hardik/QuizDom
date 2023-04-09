@@ -10,7 +10,7 @@ const Home = ({ setUser }) => {
 	const [loading, setLoading] = useState(true);
 	const [checked, setChecked] = useState(false);
 	function handleChange(e) {
-		setChecked(e.target.checked);
+		setChecked(e.target.checked);	
 	}
 
 	var uiConfig = {
@@ -43,15 +43,21 @@ const Home = ({ setUser }) => {
 		firebase.auth().onAuthStateChanged((user) => {
 			// setIsLoggedIn(!!user)
 			if (user && isMounted) {
-				getAuthdetails();
+				if (user.uid)
+					if (
+						firebase.auth().currentUser.metadata.lastSignInTime !==
+						firebase.auth().currentUser.metadata.creationTime
+					) {
+						getAuthdetails();
+					}
 				setTimeout(() => {
 					setUser({
 						uid: firebase.auth().currentUser.uid,
 						name: firebase.auth().currentUser.displayName,
 						email: firebase.auth().currentUser.email,
-						isAdmin: isAdmin,
+						isAdmin: checked ? checked :isAdmin,
 					});
-				}, 2000);
+				}, 1000);
 
 				console.log('User Logged In');
 			} else {
@@ -93,7 +99,7 @@ const Home = ({ setUser }) => {
 									checked={checked}
 									onChange={handleChange}
 								/>
-								<label className="login-text" for="admin">
+								<label className="login-text" htmlFor="admin">
 									Sign in as Admin
 								</label>
 							</div>
