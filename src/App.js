@@ -51,7 +51,7 @@ const App = () => {
 		};
 		createUserInDB();
 		setIsAdmin(user.isAdmin);
-	}, [user]);
+	}, [user,isAdmin]);
 	console.log(user);
 	return (
 		<div className="App">
